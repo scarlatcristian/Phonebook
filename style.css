@@ -1,0 +1,109 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  overflow: hidden;
+  height: fit-content;
+  min-height: 100vh;
+}
+
+@media only screen and (max-width: 37.5em) {
+  html {
+    font-size: 37.5%;
+  }
+}
+
+@media only screen and (max-width: 56.25em) {
+  html {
+    font-size: 50%;
+  }
+}
+
+@media only screen and (max-width: 75em) {
+  html {
+    font-size: 56.25%;
+  }
+}
+
+@media only screen and (min-width: 112.5em) {
+  html {
+    font-size: 75%;
+  }
+}
+
+/* PHONE */
+.phone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  overflow: hidden;
+
+  background-color: #7eb0ba;
+  border: 20px solid #000;
+  border-radius: 40px;
+  position: relative;
+
+  height: 60rem;
+  width: 30rem;
+}
+
+.phone__buttons {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.phone__buttons-first-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+.phone__buttons-second-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+.phone__buttons-third-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+.phone__buttons-fourth-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.phone__buttons button {
+  border-radius: 10px;
+  font-size: 2.5rem;
+
+  margin: 1rem;
+  width: 6rem;
+  height: 4rem;
+}
+
+/* FOOTER */
+footer {
+  background-color: #056893;
+
+  height: 5rem;
+  width: 100%;
+}

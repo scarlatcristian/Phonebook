@@ -51,7 +51,7 @@ body {
 
   overflow: hidden;
 
-  background-color: #7eb0ba;
+  background-color: #18a5eb;
   border: 20px solid #000;
   border-radius: 40px;
   position: relative;
@@ -60,6 +60,21 @@ body {
   width: 30rem;
 }
 
+/* HEADER */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background-color: #076289;
+  font-size: 1.3rem;
+  padding: 0.8rem;
+
+  height: 3rem;
+  width: 100%;
+}
+
+/* PHONE BUTTONS */
 .phone__buttons {
   display: flex;
   flex-direction: column;
@@ -92,17 +107,28 @@ body {
 }
 
 .phone__buttons button {
+  background-color: #eba118;
+  border: none;
   border-radius: 10px;
   font-size: 2.5rem;
+
+  transition: all 0.2s ease-in;
 
   margin: 1rem;
   width: 6rem;
   height: 4rem;
 }
 
+.phone__buttons button:hover {
+  background-color: rgb(158, 108, 16);
+}
+
 /* FOOTER */
 footer {
-  background-color: #056893;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #076289;
 
   height: 5rem;
   width: 100%;

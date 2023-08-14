@@ -67,6 +67,7 @@ header {
   align-items: center;
 
   background-color: #0d0d0d;
+  color: #fff;
   font-size: 1.3rem;
   padding: 0.8rem;
 
@@ -74,7 +75,28 @@ header {
   width: 100%;
 }
 
+header .icons img {
+  height: 1.5rem;
+  margin-left: 0.2rem;
+}
+
 /* PHONE BUTTONS */
+.add-number__container {
+  text-align: center;
+  color: #fff;
+}
+
+.display {
+  font-size: 4rem;
+}
+
+.add-number__container .add-number {
+  color: #0a58ca;
+  cursor: pointer;
+  font-size: 2rem;
+  text-decoration: none;
+}
+
 .phone__buttons {
   display: flex;
   flex-direction: column;
@@ -120,7 +142,7 @@ header {
 }
 
 .phone__buttons button:hover {
-  background-color: rgb(158, 108, 16);
+  background-color: #184503;
 }
 
 /* FOOTER */

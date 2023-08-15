@@ -60,6 +60,15 @@ body {
   width: 30rem;
 }
 
+.active {
+  display: block;
+}
+
+.hidden {
+  display: none;
+  visibility: none;
+}
+
 /* HEADER */
 header {
   display: flex;
@@ -134,9 +143,10 @@ header .icons img {
 }
 
 .phone__buttons .keypad {
-  background-color: #3aa10a;
+  background-color: #8c8b8b;
   border: none;
   border-radius: 10px;
+  color: #fff;
   font-size: 2.5rem;
 
   transition: all 0.2s ease-in;
@@ -144,6 +154,10 @@ header .icons img {
   margin: 1rem;
   width: 6rem;
   height: 4rem;
+}
+
+.phone__buttons .keypad:hover {
+  background-color: #4a4a4a;
 }
 
 .phone__buttons .delete {
@@ -161,8 +175,47 @@ header .icons img {
   margin-right: 2rem;
 }
 
-.phone__buttons .keypad:hover {
-  background-color: #184503;
+/* CREATE CONTACT */
+.create-contact {
+  height: 100%;
+  width: 100%;
+}
+
+.create-contact input {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+
+  font-size: 1.5rem;
+  padding: 0.5rem;
+
+  width: 100%;
+}
+
+.create-contact input:focus {
+  outline: none;
+}
+
+/* remove arrows from input type number */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.save-contact {
+  display: flex;
+  justify-content: space-between;
+
+  color: #0a58ca;
+  font-size: 1.5rem;
+  margin: 0.5rem;
+  margin-bottom: 5rem;
+}
+
+.save-contact a {
+  cursor: pointer;
 }
 
 /* FOOTER */

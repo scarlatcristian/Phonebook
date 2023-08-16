@@ -8,7 +8,7 @@ const contacts = document.querySelector(".contacts");
 const pages = document.querySelectorAll(".page");
 
 // PAGES
-const addNumberContainer = document.querySelector(".keypad-container");
+const keypadContainer = document.querySelector(".keypad-container");
 const createContact = document.querySelector(".create-contact");
 const contactsPage = document.querySelector(".contacts-page");
 
@@ -24,6 +24,8 @@ const inputFirstName = document.querySelector(".input_firstName");
 const inputNumber = document.querySelector(".input_number");
 const saveBtn = document.querySelector(".save");
 const cancelBtn = document.querySelector(".cancel");
+
+// All Contacts Container
 
 let phoneNumber = "";
 
@@ -77,7 +79,7 @@ addNumberBtn.addEventListener("click", () => {
 
 // CANCEL CREATING NEW CONTACT
 cancelBtn.addEventListener("click", () => {
-  hidePages(addNumberContainer);
+  hidePages(keypadContainer);
   addNumberBtn.style.opacity = 0;
   addNumberBtn.setAttribute("disabled", "true");
 });
@@ -106,14 +108,34 @@ saveBtn.addEventListener("click", () => {
         number: inputNumber.value,
       };
       contactsArray.push(contact);
-      console.log(contactsArray);
+      hidePages(contactsPage);
     }
   }
 });
 
+// SHOWING ALL SAVED CONTACTS
+// contactsArray.forEach(contact=>{
+//     let appendContact = `
+//     <div class="contact">
+//         dasdasdas
+//     </div>
+//     `
+//     contactsPage.append(appendContact)
+// })
+
 keypad.addEventListener("click", () => {
-  if (addNumberContainer.classList.contains("hidden")) {
-    hidePages(addNumberContainer);
+  if (keypadContainer.classList.contains("hidden")) {
+    hidePages(keypadContainer);
+    display.textContent = "";
+    addNumberBtn.style.opacity = 0;
+    addNumberBtn.setAttribute("disabled", "true");
+    deleteBtn.style.opacity = 0;
+  }
+});
+
+contacts.addEventListener("click", () => {
+  if (contactsPage.classList.contains("hidden")) {
+    hidePages(contactsPage);
     display.textContent = "";
     addNumberBtn.style.opacity = 0;
     addNumberBtn.setAttribute("disabled", "true");

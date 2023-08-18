@@ -1,8 +1,8 @@
 "use strict";
 // FOOTER
-const keypad = document.querySelector(".keypad");
+const keypadIcon = document.querySelector(".keypad");
 const favorites = document.querySelector(".favorites");
-const contacts = document.querySelector(".contacts");
+const contactsIcon = document.querySelector(".contacts");
 
 // ALL PAGES
 const pages = document.querySelectorAll(".page");
@@ -39,7 +39,7 @@ const hidePages = (activePage) => {
 const contactsArray = [
   { name: "Vasile", firstName: "Tony", number: "0752654784" },
   { name: "Savin", firstName: "Ilie", number: "0726485034" },
-  { name: "Cristi", firstName: "Scarlat", number: "0726485234" },
+  { name: "Scarlat", firstName: "Cristi", number: "0726485234" },
   { name: "Dache", firstName: "Marina", number: "0722485034" },
 ];
 
@@ -114,16 +114,30 @@ saveBtn.addEventListener("click", () => {
 });
 
 // SHOWING ALL SAVED CONTACTS
-// contactsArray.forEach(contact=>{
-//     let appendContact = `
-//     <div class="contact">
-//         dasdasdas
-//     </div>
-//     `
-//     contactsPage.append(appendContact)
-// })
+// Sorting the array alphabetically by name
+contactsArray.sort((a, b) => a.name.localeCompare(b.name));
+contactsArray.forEach((contact) => {
+  let appendContact = `
+    <div class="contact">
+        <p>${contact.name} ${contact.firstName}</p>
+        <p style="display: none">${contact.number}</p>
+        <p style="display: none">${contact.name}</p>
+        <p style="display: none">${contact.firstName}</p>
+    </div>
+    `;
+  contactsPage.innerHTML += appendContact;
+});
 
-keypad.addEventListener("click", () => {
+// CONTACT DETAILS
+const contacts = document.querySelectorAll(".contact");
+contacts.forEach((contact) => {
+  contact.addEventListener("click", () => {
+    console.log(contact.textContent);
+  });
+});
+
+// FOOTER
+keypadIcon.addEventListener("click", () => {
   if (keypadContainer.classList.contains("hidden")) {
     hidePages(keypadContainer);
     display.textContent = "";
@@ -133,7 +147,7 @@ keypad.addEventListener("click", () => {
   }
 });
 
-contacts.addEventListener("click", () => {
+contactsIcon.addEventListener("click", () => {
   if (contactsPage.classList.contains("hidden")) {
     hidePages(contactsPage);
     display.textContent = "";

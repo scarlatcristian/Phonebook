@@ -11,6 +11,7 @@ const pages = document.querySelectorAll(".page");
 const keypadContainer = document.querySelector(".keypad-container");
 const createContact = document.querySelector(".create-contact");
 const contactsPage = document.querySelector(".contacts-page");
+const contactDetails = document.querySelector(".contact-details");
 
 // Add Number Container
 const addNumberBtn = document.querySelector(".add-number");
@@ -108,16 +109,14 @@ saveBtn.addEventListener("click", () => {
         number: inputNumber.value,
       };
       contactsArray.push(contact);
-      hidePages(contactsPage);
-    }
-  }
-});
+      hidePages(keypadContainer);
 
-// SHOWING ALL SAVED CONTACTS
-// Sorting the array alphabetically by name
-contactsArray.sort((a, b) => a.name.localeCompare(b.name));
-contactsArray.forEach((contact) => {
-  let appendContact = `
+      // SHOWING ALL SAVED CONTACTS
+      // Sorting the array alphabetically by name
+      contactsPage.innerHTML = "";
+      contactsArray.sort((a, b) => a.name.localeCompare(b.name));
+      contactsArray.forEach((contact) => {
+        let innerHTML = `
     <div class="contact">
         <p>${contact.name} ${contact.firstName}</p>
         <p style="display: none">${contact.number}</p>
@@ -125,15 +124,29 @@ contactsArray.forEach((contact) => {
         <p style="display: none">${contact.firstName}</p>
     </div>
     `;
-  contactsPage.innerHTML += appendContact;
+        contactsPage.innerHTML += innerHTML;
+      });
+    }
+
+    inputName.value = "";
+    inputFirstName.value = "";
+    inputNumber.value = "";
+  }
 });
 
-// CONTACT DETAILS
-const contacts = document.querySelectorAll(".contact");
-contacts.forEach((contact) => {
-  contact.addEventListener("click", () => {
-    console.log(contact.textContent);
-  });
+// SHOWING ALL SAVED CONTACTS
+// Sorting the array alphabetically by name
+contactsArray.sort((a, b) => a.name.localeCompare(b.name));
+contactsArray.forEach((contact) => {
+  let innerHTML = `
+    <div class="contact">
+        <p>${contact.name} ${contact.firstName}</p>
+        <p style="display: none">${contact.number}</p>
+        <p style="display: none">${contact.name}</p>
+        <p style="display: none">${contact.firstName}</p>
+    </div>
+    `;
+  contactsPage.innerHTML += innerHTML;
 });
 
 // FOOTER
@@ -154,5 +167,13 @@ contactsIcon.addEventListener("click", () => {
     addNumberBtn.style.opacity = 0;
     addNumberBtn.setAttribute("disabled", "true");
     deleteBtn.style.opacity = 0;
+
+    // CONTACT DETAILS
+    const contacts = document.querySelectorAll(".contact");
+    contacts.forEach((contact) => {
+      contact.addEventListener("click", () => {
+        hidePages(contactDetails);
+      });
+    });
   }
 });

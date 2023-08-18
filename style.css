@@ -225,8 +225,6 @@ input[type="number"]::-webkit-outer-spin-button {
 
 /* CONTACTS-PAGE */
 .contacts-page {
-  background-color: #070707;
-
   overflow: auto;
 
   height: 100%;
@@ -249,6 +247,13 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .contact:hover {
   background-color: #1c1b1b;
+}
+
+/* CONTACT-DETAILS */
+
+.contact-details {
+  height: 100%;
+  width: 100%;
 }
 
 /* FOOTER */

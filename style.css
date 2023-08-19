@@ -250,10 +250,47 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 /* CONTACT-DETAILS */
-
 .contact-details {
   height: 100%;
   width: 100%;
+}
+
+.delete-edit {
+  display: flex;
+  justify-content: space-between;
+
+  color: #0a58ca;
+  font-size: 1.5rem;
+  margin: 0.5rem;
+  margin-bottom: 5rem;
+}
+
+.delete-edit a {
+  cursor: pointer;
+  text-decoration: none;
+
+  transition: all 0.1s ease-in;
+}
+
+.contact-details input {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
+
+  font-size: 1.5rem;
+  padding: 0.5rem;
+
+  width: 100%;
+}
+
+.contact-details input:focus {
+  outline: none;
+}
+
+.hideBtn {
+  visibility: 0;
+  display: none;
 }
 
 /* FOOTER */

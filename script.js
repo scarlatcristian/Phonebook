@@ -26,7 +26,13 @@ const inputNumber = document.querySelector(".input_number");
 const saveBtn = document.querySelector(".save");
 const cancelBtn = document.querySelector(".cancel");
 
-// All Contacts Container
+// Contact Details
+const contactNameInput = document.querySelector(".contact_name");
+const contactFirstNameInput = document.querySelector(".contact_firstName");
+const contactNumberInput = document.querySelector(".contact_number");
+const editContactBtn = document.querySelector(".edit-contact");
+const deleteContactBtn = document.querySelector(".delete-contact");
+const saveEditedContactBtn = document.querySelector(".save-edited-contact");
 
 let phoneNumber = "";
 
@@ -37,7 +43,7 @@ const showPage = (activePage) => {
 };
 
 // TODO: Placeholder contacts array
-const contactsArray = [
+let contactsArray = [
   { name: "Vasile", firstName: "Tony", number: "0752654784" },
   { name: "Stici", firstName: "Robert", number: "0752254784" },
   { name: "Savin", firstName: "Ilie", number: "0726485034" },
@@ -113,7 +119,40 @@ const attachContactClickHandlers = () => {
   contacts.forEach((contact) => {
     const eventHandler = () => {
       showPage(contactDetails);
-      console.log(contact);
+
+      let currentContact = contact.contactData;
+      contactNameInput.value = currentContact.name;
+      contactFirstNameInput.value = currentContact.firstName;
+      contactNumberInput.value = currentContact.number;
+
+      //   DELETE CURRENT CONTACT
+      deleteContactBtn.addEventListener("click", () => {
+        contactsArray = contactsArray.filter(
+          (contact) => contact !== currentContact
+        );
+
+        showPage(keypadContainer);
+      });
+
+      //   EDIT CURRENT CONTACT
+      editContactBtn.addEventListener("click", () => {
+        contactNameInput.readOnly = false;
+        contactFirstNameInput.readOnly = false;
+        contactNumberInput.readOnly = false;
+
+        editContactBtn.classList.toggle("hideBtn");
+        saveEditedContactBtn.classList.toggle("hideBtn");
+      });
+
+      //   SAVE CHANGES
+      saveEditedContactBtn.addEventListener("click", () => {
+        contactNameInput.readOnly = true;
+        contactFirstNameInput.readOnly = true;
+        contactNumberInput.readOnly = true;
+
+        editContactBtn.classList.toggle("hideBtn");
+        saveEditedContactBtn.classList.toggle("hideBtn");
+      });
     };
 
     // Store the event handler reference

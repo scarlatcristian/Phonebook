@@ -31,7 +31,7 @@ const cancelBtn = document.querySelector(".cancel");
 let phoneNumber = "";
 
 // Hide all pages
-const hidePages = (activePage) => {
+const showPage = (activePage) => {
   pages.forEach((page) => page.classList.add("hidden"));
   activePage.classList.remove("hidden");
 };
@@ -39,9 +39,11 @@ const hidePages = (activePage) => {
 // TODO: Placeholder contacts array
 const contactsArray = [
   { name: "Vasile", firstName: "Tony", number: "0752654784" },
+  { name: "Stici", firstName: "Robert", number: "0752254784" },
   { name: "Savin", firstName: "Ilie", number: "0726485034" },
   { name: "Scarlat", firstName: "Cristi", number: "0726485234" },
   { name: "Dache", firstName: "Marina", number: "0722485034" },
+  { name: "Vas", firstName: "Ioana", number: "0722425034" },
 ];
 
 // ADDING THE NUMBER WHEN PRESSING THE BUTTONS
@@ -75,15 +77,63 @@ addNumberBtn.addEventListener("click", () => {
   display.textContent = "";
   inputName.focus();
   inputNumber.value = phoneNumber;
-  hidePages(createContact);
+  showPage(createContact);
 });
 
 // CANCEL CREATING NEW CONTACT
 cancelBtn.addEventListener("click", () => {
-  hidePages(keypadContainer);
+  showPage(keypadContainer);
+  deleteBtn.style.opacity = 0;
   addNumberBtn.style.opacity = 0;
   addNumberBtn.setAttribute("disabled", "true");
 });
+
+// SHOWING ALL SAVED CONTACTS
+// Sorting the array alphabetically by name
+const showAllContacts = () => {
+  contactsArray.sort((a, b) => a.name.localeCompare(b.name));
+  contactsArray.forEach((contact) => {
+    let innerHTML = `
+    <div class="contact">
+        <p>${contact.name} ${contact.firstName}</p>
+        <p style="display: none">${contact.number}</p>
+        <p style="display: none">${contact.name}</p>
+        <p style="display: none">${contact.firstName}</p>
+    </div>
+    `;
+    contactsPage.innerHTML += innerHTML;
+  });
+};
+showAllContacts();
+
+// CONTACT DETAILS
+// Array to store references to event handlers
+let contactEventHandlers = [];
+
+const attachContactClickHandlers = () => {
+  const contacts = document.querySelectorAll(".contact");
+
+  contacts.forEach((contact) => {
+    const eventHandler = () => {
+      showPage(contactDetails);
+      console.log(contact);
+    };
+
+    // Store the event handler reference
+    contactEventHandlers.push(eventHandler);
+    contact.addEventListener("click", eventHandler);
+  });
+};
+
+const removeContactClickHandlers = () => {
+  const contacts = document.querySelectorAll(".contact");
+
+  contacts.forEach((contact, index) => {
+    contact.removeEventListener("click", contactEventHandlers[index]);
+  });
+
+  contactEventHandlers = [];
+};
 
 // SAVING THE NEW CONTACT
 saveBtn.addEventListener("click", () => {
@@ -109,71 +159,44 @@ saveBtn.addEventListener("click", () => {
         number: inputNumber.value,
       };
       contactsArray.push(contact);
-      hidePages(keypadContainer);
+      showPage(keypadContainer);
 
-      // SHOWING ALL SAVED CONTACTS
-      // Sorting the array alphabetically by name
       contactsPage.innerHTML = "";
-      contactsArray.sort((a, b) => a.name.localeCompare(b.name));
-      contactsArray.forEach((contact) => {
-        let innerHTML = `
-    <div class="contact">
-        <p>${contact.name} ${contact.firstName}</p>
-        <p style="display: none">${contact.number}</p>
-        <p style="display: none">${contact.name}</p>
-        <p style="display: none">${contact.firstName}</p>
-    </div>
-    `;
-        contactsPage.innerHTML += innerHTML;
-      });
+      inputName.value = "";
+      inputFirstName.value = "";
+      inputNumber.value = "";
+      showAllContacts();
     }
-
-    inputName.value = "";
-    inputFirstName.value = "";
-    inputNumber.value = "";
   }
-});
-
-// SHOWING ALL SAVED CONTACTS
-// Sorting the array alphabetically by name
-contactsArray.sort((a, b) => a.name.localeCompare(b.name));
-contactsArray.forEach((contact) => {
-  let innerHTML = `
-    <div class="contact">
-        <p>${contact.name} ${contact.firstName}</p>
-        <p style="display: none">${contact.number}</p>
-        <p style="display: none">${contact.name}</p>
-        <p style="display: none">${contact.firstName}</p>
-    </div>
-    `;
-  contactsPage.innerHTML += innerHTML;
 });
 
 // FOOTER
 keypadIcon.addEventListener("click", () => {
-  if (keypadContainer.classList.contains("hidden")) {
-    hidePages(keypadContainer);
-    display.textContent = "";
-    addNumberBtn.style.opacity = 0;
-    addNumberBtn.setAttribute("disabled", "true");
-    deleteBtn.style.opacity = 0;
+  if (!keypadContainer.classList.contains("hidden")) {
+    return;
   }
+
+  showPage(keypadContainer);
+  display.textContent = "";
+  addNumberBtn.style.opacity = 0;
+  addNumberBtn.setAttribute("disabled", "true");
+  deleteBtn.style.opacity = 0;
 });
 
 contactsIcon.addEventListener("click", () => {
-  if (contactsPage.classList.contains("hidden")) {
-    hidePages(contactsPage);
-    display.textContent = "";
-    addNumberBtn.style.opacity = 0;
-    addNumberBtn.setAttribute("disabled", "true");
-    deleteBtn.style.opacity = 0;
-
-    // CONTACT DETAILS
-    const contacts = document.querySelectorAll(".contact");
-    contacts.forEach((contact) => {
-      contact.addEventListener("click", () => {
-        hidePages(contactDetails);
-      });
-    });
+  if (!contactsPage.classList.contains("hidden")) {
+    return;
   }
+
+  showPage(contactsPage);
+  display.textContent = "";
+  addNumberBtn.style.opacity = 0;
+  addNumberBtn.setAttribute("disabled", "true");
+  deleteBtn.style.opacity = 0;
+
+  // Remove existing event handlers before attaching again
+  removeContactClickHandlers();
+
+  // Attach event handlers to contacts
+  attachContactClickHandlers();
 });

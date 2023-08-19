@@ -93,15 +93,12 @@ cancelBtn.addEventListener("click", () => {
 const showAllContacts = () => {
   contactsArray.sort((a, b) => a.name.localeCompare(b.name));
   contactsArray.forEach((contact) => {
-    let innerHTML = `
-    <div class="contact">
-        <p>${contact.name} ${contact.firstName}</p>
-        <p style="display: none">${contact.number}</p>
-        <p style="display: none">${contact.name}</p>
-        <p style="display: none">${contact.firstName}</p>
-    </div>
-    `;
-    contactsPage.innerHTML += innerHTML;
+    const contactElement = document.createElement("div");
+    contactElement.classList.add("contact");
+    contactElement.innerHTML = `<p>${contact.name} ${contact.firstName}</p>`;
+    contactElement.contactData = contact;
+
+    contactsPage.appendChild(contactElement);
   });
 };
 showAllContacts();

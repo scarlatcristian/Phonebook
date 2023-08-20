@@ -42,6 +42,12 @@ const showPage = (activePage) => {
   activePage.classList.remove("hidden");
 };
 
+const hideAddNumberBtn = () => {
+  addNumberBtn.style.opacity = 0;
+  addNumberBtn.setAttribute("disabled", "true");
+  deleteBtn.style.opacity = 0;
+};
+
 // TODO: Placeholder contacts array
 let contactsArray = [
   { name: "Vasile", firstName: "Tony", number: "0752654784" },
@@ -72,9 +78,7 @@ deleteBtn.addEventListener("click", () => {
   phoneNumber = display.textContent;
 
   if (display.textContent === "") {
-    addNumberBtn.style.opacity = 0;
-    addNumberBtn.setAttribute("disabled", "true");
-    deleteBtn.style.opacity = 0;
+    hideAddNumberBtn();
   }
 });
 
@@ -89,29 +93,30 @@ addNumberBtn.addEventListener("click", () => {
 // CANCEL CREATING NEW CONTACT
 cancelBtn.addEventListener("click", () => {
   showPage(keypadContainer);
-  deleteBtn.style.opacity = 0;
-  addNumberBtn.style.opacity = 0;
-  addNumberBtn.setAttribute("disabled", "true");
+  hideAddNumberBtn();
 });
 
 // SHOWING ALL SAVED CONTACTS
 // Sorting the array alphabetically by name
 const showAllContacts = () => {
+  contactsPage.innerHTML = "";
+
   contactsArray.sort((a, b) => a.name.localeCompare(b.name));
   contactsArray.forEach((contact) => {
     const contactElement = document.createElement("div");
     contactElement.classList.add("contact");
     contactElement.innerHTML = `<p>${contact.name} ${contact.firstName}</p>`;
     contactElement.contactData = contact;
+    contactElement.setAttribute("data-name", contact.name);
 
     contactsPage.appendChild(contactElement);
   });
 };
-showAllContacts();
 
 // CONTACT DETAILS
 // Array to store references to event handlers
 let contactEventHandlers = [];
+let currentContact;
 
 const attachContactClickHandlers = () => {
   const contacts = document.querySelectorAll(".contact");
@@ -120,39 +125,10 @@ const attachContactClickHandlers = () => {
     const eventHandler = () => {
       showPage(contactDetails);
 
-      let currentContact = contact.contactData;
+      currentContact = contact.contactData;
       contactNameInput.value = currentContact.name;
       contactFirstNameInput.value = currentContact.firstName;
       contactNumberInput.value = currentContact.number;
-
-      //   DELETE CURRENT CONTACT
-      deleteContactBtn.addEventListener("click", () => {
-        contactsArray = contactsArray.filter(
-          (contact) => contact !== currentContact
-        );
-
-        showPage(keypadContainer);
-      });
-
-      //   EDIT CURRENT CONTACT
-      editContactBtn.addEventListener("click", () => {
-        contactNameInput.readOnly = false;
-        contactFirstNameInput.readOnly = false;
-        contactNumberInput.readOnly = false;
-
-        editContactBtn.classList.toggle("hideBtn");
-        saveEditedContactBtn.classList.toggle("hideBtn");
-      });
-
-      //   SAVE CHANGES
-      saveEditedContactBtn.addEventListener("click", () => {
-        contactNameInput.readOnly = true;
-        contactFirstNameInput.readOnly = true;
-        contactNumberInput.readOnly = true;
-
-        editContactBtn.classList.toggle("hideBtn");
-        saveEditedContactBtn.classList.toggle("hideBtn");
-      });
     };
 
     // Store the event handler reference
@@ -170,6 +146,40 @@ const removeContactClickHandlers = () => {
 
   contactEventHandlers = [];
 };
+
+//   DELETE CURRENT CONTACT
+deleteContactBtn.addEventListener("click", () => {
+  contactsArray = contactsArray.filter((contact) => contact !== currentContact);
+  console.log(contactsArray);
+  showPage(keypadContainer);
+});
+
+const hideSaveBtn = () => {
+  if (editContactBtn.classList.contains("hideBtn")) {
+    editContactBtn.classList.toggle("hideBtn");
+    saveEditedContactBtn.classList.toggle("hideBtn");
+  }
+};
+
+//   EDIT CURRENT CONTACT
+editContactBtn.addEventListener("click", () => {
+  contactNameInput.readOnly = false;
+  contactFirstNameInput.readOnly = false;
+  contactNumberInput.readOnly = false;
+
+  editContactBtn.classList.toggle("hideBtn");
+  saveEditedContactBtn.classList.toggle("hideBtn");
+  console.log(currentContact);
+});
+
+//   SAVE CHANGES
+saveEditedContactBtn.addEventListener("click", () => {
+  contactNameInput.readOnly = true;
+  contactFirstNameInput.readOnly = true;
+  contactNumberInput.readOnly = true;
+
+  hideSaveBtn();
+});
 
 // SAVING THE NEW CONTACT
 saveBtn.addEventListener("click", () => {
@@ -201,6 +211,7 @@ saveBtn.addEventListener("click", () => {
       inputName.value = "";
       inputFirstName.value = "";
       inputNumber.value = "";
+      hideAddNumberBtn();
       showAllContacts();
     }
   }
@@ -214,25 +225,22 @@ keypadIcon.addEventListener("click", () => {
 
   showPage(keypadContainer);
   display.textContent = "";
-  addNumberBtn.style.opacity = 0;
-  addNumberBtn.setAttribute("disabled", "true");
-  deleteBtn.style.opacity = 0;
+  hideAddNumberBtn();
 });
 
 contactsIcon.addEventListener("click", () => {
   if (!contactsPage.classList.contains("hidden")) {
     return;
   }
-
+  showAllContacts();
   showPage(contactsPage);
   display.textContent = "";
-  addNumberBtn.style.opacity = 0;
-  addNumberBtn.setAttribute("disabled", "true");
-  deleteBtn.style.opacity = 0;
+
+  hideAddNumberBtn();
+  hideSaveBtn();
 
   // Remove existing event handlers before attaching again
   removeContactClickHandlers();
-
   // Attach event handlers to contacts
   attachContactClickHandlers();
 });

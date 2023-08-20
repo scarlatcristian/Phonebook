@@ -1,17 +1,18 @@
 "use strict";
 // FOOTER
 const keypadIcon = document.querySelector(".keypad");
-const favorites = document.querySelector(".favorites");
+const favoritesIcon = document.querySelector(".favorites");
 const contactsIcon = document.querySelector(".contacts");
 
 // ALL PAGES
 const pages = document.querySelectorAll(".page");
 
 // PAGES
-const keypadContainer = document.querySelector(".keypad-container");
+const keypadPage = document.querySelector(".keypad-page");
 const createContact = document.querySelector(".create-contact");
 const contactsPage = document.querySelector(".contacts-page");
 const contactDetails = document.querySelector(".contact-details");
+const favoritesPage = document.querySelector(".favorites-page");
 
 // Add Number Container
 const addNumberBtn = document.querySelector(".add-number");
@@ -50,12 +51,48 @@ const hideAddNumberBtn = () => {
 
 // TODO: Placeholder contacts array
 let contactsArray = [
-  { name: "Vasile", firstName: "Tony", number: "0752654784" },
-  { name: "Stici", firstName: "Robert", number: "0752254784" },
-  { name: "Savin", firstName: "Ilie", number: "0726485034" },
-  { name: "Scarlat", firstName: "Cristi", number: "0726485234" },
-  { name: "Dache", firstName: "Marina", number: "0722485034" },
-  { name: "Vas", firstName: "Ioana", number: "0722425034" },
+  {
+    id: 1,
+    name: "Vasile",
+    firstName: "Tony",
+    number: "0752654784",
+    favorite: false,
+  },
+  {
+    id: 2,
+    name: "Stici",
+    firstName: "Robert",
+    number: "0752254784",
+    favorite: false,
+  },
+  {
+    id: 3,
+    name: "Savin",
+    firstName: "Ilie",
+    number: "0726485034",
+    favorite: false,
+  },
+  {
+    id: 4,
+    name: "Scarlat",
+    firstName: "Cristi",
+    number: "0726485234",
+    favorite: true,
+  },
+  {
+    id: 5,
+    name: "Dache",
+    firstName: "Marina",
+    number: "0722485034",
+    favorite: false,
+  },
+  {
+    id: 6,
+    name: "Vas",
+    firstName: "Ioana",
+    number: "0722425034",
+    favorite: false,
+  },
 ];
 
 // ADDING THE NUMBER WHEN PRESSING THE BUTTONS
@@ -92,7 +129,7 @@ addNumberBtn.addEventListener("click", () => {
 
 // CANCEL CREATING NEW CONTACT
 cancelBtn.addEventListener("click", () => {
-  showPage(keypadContainer);
+  showPage(keypadPage);
   hideAddNumberBtn();
 });
 
@@ -147,11 +184,22 @@ const removeContactClickHandlers = () => {
   contactEventHandlers = [];
 };
 
+// SHOW UPDATED CONTACTS LIST
+
+const updateContactList = () => {
+  showAllContacts();
+  showPage(contactsPage);
+
+  // Remove existing event handlers before attaching again
+  removeContactClickHandlers();
+  // Attach event handlers to contacts
+  attachContactClickHandlers();
+};
+
 //   DELETE CURRENT CONTACT
 deleteContactBtn.addEventListener("click", () => {
   contactsArray = contactsArray.filter((contact) => contact !== currentContact);
-  console.log(contactsArray);
-  showPage(keypadContainer);
+  updateContactList();
 });
 
 const hideSaveBtn = () => {
@@ -169,7 +217,6 @@ editContactBtn.addEventListener("click", () => {
 
   editContactBtn.classList.toggle("hideBtn");
   saveEditedContactBtn.classList.toggle("hideBtn");
-  console.log(currentContact);
 });
 
 //   SAVE CHANGES
@@ -177,6 +224,15 @@ saveEditedContactBtn.addEventListener("click", () => {
   contactNameInput.readOnly = true;
   contactFirstNameInput.readOnly = true;
   contactNumberInput.readOnly = true;
+
+  contactsArray.map((contact) => {
+    if (contact === currentContact) {
+      contact.name = contactNameInput.value;
+      contact.firstName = contactFirstNameInput.value;
+      contact.number = contactNumberInput.value;
+    }
+    updateContactList();
+  });
 
   hideSaveBtn();
 });
@@ -205,7 +261,7 @@ saveBtn.addEventListener("click", () => {
         number: inputNumber.value,
       };
       contactsArray.push(contact);
-      showPage(keypadContainer);
+      showPage(keypadPage);
 
       contactsPage.innerHTML = "";
       inputName.value = "";
@@ -219,11 +275,11 @@ saveBtn.addEventListener("click", () => {
 
 // FOOTER
 keypadIcon.addEventListener("click", () => {
-  if (!keypadContainer.classList.contains("hidden")) {
+  if (!keypadPage.classList.contains("hidden")) {
     return;
   }
 
-  showPage(keypadContainer);
+  showPage(keypadPage);
   display.textContent = "";
   hideAddNumberBtn();
 });
@@ -232,15 +288,9 @@ contactsIcon.addEventListener("click", () => {
   if (!contactsPage.classList.contains("hidden")) {
     return;
   }
-  showAllContacts();
-  showPage(contactsPage);
+  updateContactList();
   display.textContent = "";
 
   hideAddNumberBtn();
   hideSaveBtn();
-
-  // Remove existing event handlers before attaching again
-  removeContactClickHandlers();
-  // Attach event handlers to contacts
-  attachContactClickHandlers();
 });

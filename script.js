@@ -180,8 +180,10 @@ const displayContacts = (filterValue) => {
       }
     });
     showAllContacts(filteredArray);
+    attachContactClickHandlers(); // Attach event handlers to the filtered contacts
   } else {
     showAllContacts(contactsArray);
+    attachContactClickHandlers(); // Attach event handlers to all contacts
   }
 };
 
@@ -227,6 +229,7 @@ const removeContactClickHandlers = () => {
 const updateContactList = () => {
   displayContacts();
   showPage(contactsPage);
+  filter.value = "";
 
   // Remove existing event handlers before attaching again
   removeContactClickHandlers();
@@ -268,6 +271,7 @@ saveEditedContactBtn.addEventListener("click", () => {
       contact.name = contactNameInput.value;
       contact.firstName = contactFirstNameInput.value;
       contact.number = contactNumberInput.value;
+      contact.fullName = `${contactNameInput.value} ${contactFirstNameInput.value}`;
     }
     updateContactList();
   });

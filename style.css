@@ -316,8 +316,15 @@ input[type="number"]::-webkit-outer-spin-button {
   display: none;
 }
 
-/* CONTACTS-PAGE */
+/* FAVORITES-PAGE */
 .favorites-page {
+  overflow: auto;
+
+  height: 100%;
+  width: 100%;
+}
+
+.display-all-contacts {
   overflow: auto;
 
   height: 100%;

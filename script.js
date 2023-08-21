@@ -171,7 +171,7 @@ const showAllContacts = (array) => {
 };
 
 const showAllFavoriteContacts = (array) => {
-  allContactsContainer.innerHTML = "";
+  favoriteContacts.innerHTML = "";
 
   // Sorting the array alphabetically by name
   array.sort((a, b) => a.name.localeCompare(b.name));
@@ -268,33 +268,34 @@ const removeContactClickHandlers = () => {
 };
 
 // SHOW UPDATED CONTACTS LIST
-const updateContactList = () => {
-  displayContacts();
-  showPage(contactsPage);
-  filter.value = "";
+const updateContactList = (updatedPage) => {
+  if (updatedPage === favoritesPage) {
+    displayFavoriteContacts();
+    showPage(updatedPage);
+    filter.value = "";
 
-  // Remove existing event handlers before attaching again
-  removeContactClickHandlers();
-  // Attach event handlers to contacts
-  attachContactClickHandlers();
-};
+    // Remove existing event handlers before attaching again
+    removeContactClickHandlers();
+    // Attach event handlers to contacts
+    attachContactClickHandlers();
+  }
 
-// SHOW UPDATED CONTACTS LIST
-const updateFavoriteContactsList = () => {
-  displayFavoriteContacts();
-  showPage(favoritesPage);
-  filter.value = "";
+  if (updatedPage === contactsPage) {
+    displayContacts();
+    showPage(updatedPage);
+    filter.value = "";
 
-  // Remove existing event handlers before attaching again
-  removeContactClickHandlers();
-  // Attach event handlers to contacts
-  attachContactClickHandlers();
+    // Remove existing event handlers before attaching again
+    removeContactClickHandlers();
+    // Attach event handlers to contacts
+    attachContactClickHandlers();
+  }
 };
 
 //   DELETE CURRENT CONTACT
 deleteContactBtn.addEventListener("click", () => {
   contactsArray = contactsArray.filter((contact) => contact !== currentContact);
-  updateContactList();
+  updateContactList(contactsPage);
 });
 
 const hideSaveBtn = () => {
@@ -327,7 +328,7 @@ saveEditedContactBtn.addEventListener("click", () => {
       contact.number = contactNumberInput.value;
       contact.fullName = `${contactNameInput.value} ${contactFirstNameInput.value}`;
     }
-    updateContactList();
+    updateContactList(contactsPage);
   });
 
   hideSaveBtn();
@@ -379,7 +380,7 @@ keypadIcon.addEventListener("click", () => {
 });
 
 contactsIcon.addEventListener("click", () => {
-  updateContactList();
+  updateContactList(contactsPage);
   display.textContent = "";
   filter.value = "";
 
@@ -388,10 +389,13 @@ contactsIcon.addEventListener("click", () => {
 });
 
 favoritesIcon.addEventListener("click", () => {
-  updateFavoriteContactsList();
+  updateContactList(favoritesPage);
   display.textContent = "";
   filter.value = "";
 
   hideAddNumberBtn();
   hideSaveBtn();
 });
+
+// TODO: In contact details add btn check if contact is favorite or not -> display btn remove/add to favorite
+// TODO: Create visual effect when when pressing edit contact

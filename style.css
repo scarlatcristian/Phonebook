@@ -231,6 +231,29 @@ input[type="number"]::-webkit-outer-spin-button {
   width: 100%;
 }
 
+.filter {
+  position: relative;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.5rem;
+  padding: 1rem;
+  margin: 1rem;
+
+  height: 3rem;
+  width: 90%;
+}
+
+.filter:focus {
+  outline: none;
+}
+
+.display-all-contacts {
+  overflow: auto;
+
+  height: 100%;
+  width: 100%;
+}
+
 .contact {
   border-bottom: 1px solid rgba(255, 255, 255, 0.4);
   color: #fff;
@@ -291,6 +314,14 @@ input[type="number"]::-webkit-outer-spin-button {
 .hideBtn {
   visibility: 0;
   display: none;
+}
+
+/* CONTACTS-PAGE */
+.favorites-page {
+  overflow: auto;
+
+  height: 100%;
+  width: 100%;
 }
 
 /* FOOTER */

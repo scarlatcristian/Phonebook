@@ -35,6 +35,10 @@ const editContactBtn = document.querySelector(".edit-contact");
 const deleteContactBtn = document.querySelector(".delete-contact");
 const saveEditedContactBtn = document.querySelector(".save-edited-contact");
 
+// All contacts
+const allContactsContainer = document.querySelector(".display-all-contacts");
+const filter = document.querySelector(".filter");
+
 let phoneNumber = "";
 
 // Hide all pages
@@ -55,6 +59,7 @@ let contactsArray = [
     id: 1,
     name: "Vasile",
     firstName: "Tony",
+    fullName: "Vasile Tony",
     number: "0752654784",
     favorite: false,
   },
@@ -62,6 +67,7 @@ let contactsArray = [
     id: 2,
     name: "Stici",
     firstName: "Robert",
+    fullName: "Stici Robert",
     number: "0752254784",
     favorite: false,
   },
@@ -69,6 +75,7 @@ let contactsArray = [
     id: 3,
     name: "Savin",
     firstName: "Ilie",
+    fullName: "Savin Ilie",
     number: "0726485034",
     favorite: false,
   },
@@ -76,6 +83,7 @@ let contactsArray = [
     id: 4,
     name: "Scarlat",
     firstName: "Cristi",
+    fullName: "Scarlat Cristi",
     number: "0726485234",
     favorite: true,
   },
@@ -83,6 +91,7 @@ let contactsArray = [
     id: 5,
     name: "Dache",
     firstName: "Marina",
+    fullName: "Dache Marina",
     number: "0722485034",
     favorite: false,
   },
@@ -90,6 +99,7 @@ let contactsArray = [
     id: 6,
     name: "Vas",
     firstName: "Ioana",
+    fullName: "Vas Ioana",
     number: "0722425034",
     favorite: false,
   },
@@ -127,28 +137,57 @@ addNumberBtn.addEventListener("click", () => {
   showPage(createContact);
 });
 
+// Empty Input Fields
+const emptyInputFields = () => {
+  inputName.value = "";
+  inputFirstName.value = "";
+  inputNumber.value = "";
+};
+
 // CANCEL CREATING NEW CONTACT
 cancelBtn.addEventListener("click", () => {
   showPage(keypadPage);
+  emptyInputFields();
   hideAddNumberBtn();
 });
 
-// SHOWING ALL SAVED CONTACTS
-// Sorting the array alphabetically by name
-const showAllContacts = () => {
-  contactsPage.innerHTML = "";
+const showAllContacts = (array) => {
+  allContactsContainer.innerHTML = "";
 
-  contactsArray.sort((a, b) => a.name.localeCompare(b.name));
-  contactsArray.forEach((contact) => {
+  // Sorting the array alphabetically by name
+  array.sort((a, b) => a.name.localeCompare(b.name));
+  array.forEach((contact) => {
     const contactElement = document.createElement("div");
     contactElement.classList.add("contact");
-    contactElement.innerHTML = `<p>${contact.name} ${contact.firstName}</p>`;
+    contactElement.innerHTML = `<p>${contact.fullName}</p>`;
     contactElement.contactData = contact;
     contactElement.setAttribute("data-name", contact.name);
 
-    contactsPage.appendChild(contactElement);
+    allContactsContainer.appendChild(contactElement);
   });
 };
+
+// SHOWING ALL SAVED CONTACTS
+const displayContacts = (filterValue) => {
+  if (filterValue) {
+    let filteredArray = [];
+    contactsArray.forEach((contact) => {
+      if (
+        contact.fullName.toLocaleLowerCase().includes(filterValue) ||
+        contact.number.includes(filterValue)
+      ) {
+        filteredArray.push(contact);
+      }
+    });
+    showAllContacts(filteredArray);
+  } else {
+    showAllContacts(contactsArray);
+  }
+};
+
+filter.addEventListener("input", () => {
+  displayContacts(filter.value.toLowerCase());
+});
 
 // CONTACT DETAILS
 // Array to store references to event handlers
@@ -185,9 +224,8 @@ const removeContactClickHandlers = () => {
 };
 
 // SHOW UPDATED CONTACTS LIST
-
 const updateContactList = () => {
-  showAllContacts();
+  displayContacts();
   showPage(contactsPage);
 
   // Remove existing event handlers before attaching again
@@ -258,17 +296,15 @@ saveBtn.addEventListener("click", () => {
       let contact = {
         name: inputName.value,
         firstName: inputFirstName.value,
+        fullName: `${inputName.value} ${inputFirstName.value}`,
         number: inputNumber.value,
       };
       contactsArray.push(contact);
       showPage(keypadPage);
 
-      contactsPage.innerHTML = "";
-      inputName.value = "";
-      inputFirstName.value = "";
-      inputNumber.value = "";
+      emptyInputFields();
       hideAddNumberBtn();
-      showAllContacts();
+      displayContacts();
     }
   }
 });
@@ -285,11 +321,18 @@ keypadIcon.addEventListener("click", () => {
 });
 
 contactsIcon.addEventListener("click", () => {
-  if (!contactsPage.classList.contains("hidden")) {
-    return;
-  }
   updateContactList();
   display.textContent = "";
+  filter.value = "";
+
+  hideAddNumberBtn();
+  hideSaveBtn();
+});
+
+favoritesIcon.addEventListener("click", () => {
+  updateContactList();
+  display.textContent = "";
+  filter.value = "";
 
   hideAddNumberBtn();
   hideSaveBtn();

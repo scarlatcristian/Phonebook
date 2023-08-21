@@ -39,6 +39,9 @@ const saveEditedContactBtn = document.querySelector(".save-edited-contact");
 const allContactsContainer = document.querySelector(".display-all-contacts");
 const filter = document.querySelector(".filter");
 
+// Favorite contacts
+const favoriteContacts = document.querySelector(".display-all-favorites");
+
 let phoneNumber = "";
 
 // Hide all pages
@@ -167,6 +170,44 @@ const showAllContacts = (array) => {
   });
 };
 
+const showAllFavoriteContacts = (array) => {
+  allContactsContainer.innerHTML = "";
+
+  // Sorting the array alphabetically by name
+  array.sort((a, b) => a.name.localeCompare(b.name));
+  array.forEach((contact) => {
+    if (contact.favorite === true) {
+      const contactElement = document.createElement("div");
+      contactElement.classList.add("contact");
+      contactElement.innerHTML = `<p>${contact.fullName}</p>`;
+      contactElement.contactData = contact;
+      contactElement.setAttribute("data-name", contact.name);
+
+      favoriteContacts.appendChild(contactElement);
+    }
+  });
+};
+
+//TODO: SHOWING FAVORITE CONTACT
+const displayFavoriteContacts = (filterValue) => {
+  if (filterValue) {
+    let filteredArray = [];
+    contactsArray.forEach((contact) => {
+      if (
+        contact.fullName.toLocaleLowerCase().includes(filterValue) ||
+        contact.number.includes(filterValue)
+      ) {
+        filteredArray.push(contact);
+      }
+    });
+    showAllFavoriteContacts(filteredArray);
+    attachContactClickHandlers(); // Attach event handlers to the filtered contacts
+  } else {
+    showAllFavoriteContacts(contactsArray);
+    attachContactClickHandlers(); // Attach event handlers to all contacts
+  }
+};
+
 // SHOWING ALL SAVED CONTACTS
 const displayContacts = (filterValue) => {
   if (filterValue) {
@@ -189,6 +230,7 @@ const displayContacts = (filterValue) => {
 
 filter.addEventListener("input", () => {
   displayContacts(filter.value.toLowerCase());
+  displayFavoriteContacts(filter.value.toLowerCase());
 });
 
 // CONTACT DETAILS
@@ -229,6 +271,18 @@ const removeContactClickHandlers = () => {
 const updateContactList = () => {
   displayContacts();
   showPage(contactsPage);
+  filter.value = "";
+
+  // Remove existing event handlers before attaching again
+  removeContactClickHandlers();
+  // Attach event handlers to contacts
+  attachContactClickHandlers();
+};
+
+// SHOW UPDATED CONTACTS LIST
+const updateFavoriteContactsList = () => {
+  displayFavoriteContacts();
+  showPage(favoritesPage);
   filter.value = "";
 
   // Remove existing event handlers before attaching again
@@ -334,7 +388,7 @@ contactsIcon.addEventListener("click", () => {
 });
 
 favoritesIcon.addEventListener("click", () => {
-  updateContactList();
+  updateFavoriteContactsList();
   display.textContent = "";
   filter.value = "";
 

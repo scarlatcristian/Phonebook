@@ -35,6 +35,7 @@ const contactNumberInput = document.querySelector(".contact_number");
 const editContactBtn = document.querySelector(".edit-contact");
 const deleteContactBtn = document.querySelector(".delete-contact");
 const saveEditedContactBtn = document.querySelector(".save-edited-contact");
+const favoriteBtn = document.querySelector(".favorite-btn");
 
 // All contacts
 const allContactsContainer = document.querySelector(".display-all-contacts");
@@ -265,6 +266,10 @@ const attachContactClickHandlers = () => {
       contactNameInput.value = currentContact.name;
       contactFirstNameInput.value = currentContact.firstName;
       contactNumberInput.value = currentContact.number;
+
+      favoriteBtn.textContent = currentContact.favorite
+        ? "Remove as favorite"
+        : "Add as favorite";
     };
 
     // Store the event handler reference
@@ -282,6 +287,23 @@ const removeContactClickHandlers = () => {
 
   contactEventHandlers = [];
 };
+
+// ADD/REMOVE CONTACT FROM FAVORITE
+const favoriteBtnText = () => {
+  favoriteBtn.textContent =
+    favoriteBtn.textContent === "Remove as favorite"
+      ? "Add as favorite"
+      : "Remove as favorite";
+};
+
+favoriteBtn.addEventListener("click", () => {
+  contactsArray.forEach((contact) => {
+    if (contact === currentContact) {
+      contact.favorite = !contact.favorite;
+      favoriteBtnText();
+    }
+  });
+});
 
 // SHOW UPDATED CONTACTS LIST
 const resetHandlers = () => {
@@ -394,6 +416,7 @@ keypadIcon.addEventListener("click", () => {
   emptyFilters();
   display.textContent = "";
   hideAddNumberBtn();
+  hideSaveBtn();
 });
 
 contactsIcon.addEventListener("click", () => {

@@ -26,6 +26,7 @@ const inputFirstName = document.querySelector(".input_firstName");
 const inputNumber = document.querySelector(".input_number");
 const saveBtn = document.querySelector(".save");
 const cancelBtn = document.querySelector(".cancel");
+const duplicateNumberText = document.querySelector(".duplicateNumber");
 
 // Contact Details
 const contactNameInput = document.querySelector(".contact_name");
@@ -106,6 +107,14 @@ let contactsArray = [
     number: "0722425034",
     favorite: false,
   },
+  {
+    id: 7,
+    name: "Lover-Boy",
+    firstName: "Trea ❤️",
+    fullName: "Lover-Boy Trea ❤️",
+    number: "0722425034",
+    favorite: false,
+  },
 ];
 
 // ADDING THE NUMBER WHEN PRESSING THE BUTTONS
@@ -145,6 +154,7 @@ const emptyInputFields = () => {
   inputName.value = "";
   inputFirstName.value = "";
   inputNumber.value = "";
+  duplicateNumberText.textContent = "";
 };
 
 // CANCEL CREATING NEW CONTACT
@@ -351,6 +361,8 @@ saveBtn.addEventListener("click", () => {
     contactsArray.forEach((person) => {
       if (person.number === inputNumber.value) {
         isDuplicate = true;
+        duplicateNumberText.classList.remove("hidden");
+        duplicateNumberText.textContent = `Number used for ${person.fullName}`;
         return;
       }
     });
@@ -377,8 +389,9 @@ keypadIcon.addEventListener("click", () => {
   if (!keypadPage.classList.contains("hidden")) {
     return;
   }
-
   showPage(keypadPage);
+  emptyInputFields();
+  emptyFilters();
   display.textContent = "";
   hideAddNumberBtn();
 });
@@ -386,8 +399,8 @@ keypadIcon.addEventListener("click", () => {
 contactsIcon.addEventListener("click", () => {
   updateContactList(contactsPage);
   display.textContent = "";
+  emptyInputFields();
   emptyFilters();
-
   hideAddNumberBtn();
   hideSaveBtn();
 });
@@ -395,8 +408,8 @@ contactsIcon.addEventListener("click", () => {
 favoritesIcon.addEventListener("click", () => {
   updateContactList(favoritesPage);
   display.textContent = "";
+  emptyInputFields();
   emptyFilters();
-
   hideAddNumberBtn();
   hideSaveBtn();
 });

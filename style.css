@@ -183,6 +183,13 @@ header .icons img {
   width: 100%;
 }
 
+.duplicateNumber {
+  color: rgb(187, 28, 28);
+  font-size: 1.3rem;
+  margin-left: 1rem;
+  text-align: left;
+}
+
 .create-contact input {
   background-color: rgba(255, 255, 255, 0.1);
   border: none;

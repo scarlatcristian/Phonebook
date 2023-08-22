@@ -37,7 +37,7 @@ const saveEditedContactBtn = document.querySelector(".save-edited-contact");
 
 // All contacts
 const allContactsContainer = document.querySelector(".display-all-contacts");
-const filter = document.querySelector(".filter");
+const filters = document.querySelectorAll(".filter");
 
 // Favorite contacts
 const favoriteContacts = document.querySelector(".display-all-favorites");
@@ -64,7 +64,7 @@ let contactsArray = [
     firstName: "Tony",
     fullName: "Vasile Tony",
     number: "0752654784",
-    favorite: false,
+    favorite: true,
   },
   {
     id: 2,
@@ -72,7 +72,7 @@ let contactsArray = [
     firstName: "Robert",
     fullName: "Stici Robert",
     number: "0752254784",
-    favorite: false,
+    favorite: true,
   },
   {
     id: 3,
@@ -176,7 +176,7 @@ const showAllFavoriteContacts = (array) => {
   // Sorting the array alphabetically by name
   array.sort((a, b) => a.name.localeCompare(b.name));
   array.forEach((contact) => {
-    if (contact.favorite === true) {
+    if (contact.favorite) {
       const contactElement = document.createElement("div");
       contactElement.classList.add("contact");
       contactElement.innerHTML = `<p>${contact.fullName}</p>`;
@@ -188,14 +188,14 @@ const showAllFavoriteContacts = (array) => {
   });
 };
 
-//TODO: SHOWING FAVORITE CONTACT
-const displayFavoriteContacts = (filterValue) => {
-  if (filterValue) {
+// SHOWING FAVORITE CONTACT
+const displayFavoriteContacts = (filteredValue) => {
+  if (filteredValue) {
     let filteredArray = [];
     contactsArray.forEach((contact) => {
       if (
-        contact.fullName.toLocaleLowerCase().includes(filterValue) ||
-        contact.number.includes(filterValue)
+        contact.fullName.toLocaleLowerCase().includes(filteredValue) ||
+        contact.number.includes(filteredValue)
       ) {
         filteredArray.push(contact);
       }
@@ -209,13 +209,13 @@ const displayFavoriteContacts = (filterValue) => {
 };
 
 // SHOWING ALL SAVED CONTACTS
-const displayContacts = (filterValue) => {
-  if (filterValue) {
+const displayContacts = (filteredValue) => {
+  if (filteredValue) {
     let filteredArray = [];
     contactsArray.forEach((contact) => {
       if (
-        contact.fullName.toLocaleLowerCase().includes(filterValue) ||
-        contact.number.includes(filterValue)
+        contact.fullName.toLocaleLowerCase().includes(filteredValue) ||
+        contact.number.includes(filteredValue)
       ) {
         filteredArray.push(contact);
       }
@@ -228,10 +228,16 @@ const displayContacts = (filterValue) => {
   }
 };
 
-filter.addEventListener("input", () => {
-  displayContacts(filter.value.toLowerCase());
-  displayFavoriteContacts(filter.value.toLowerCase());
+filters.forEach((filter) => {
+  filter.addEventListener("input", () => {
+    displayContacts(filter.value.toLowerCase());
+    displayFavoriteContacts(filter.value.toLowerCase());
+  });
 });
+
+const emptyFilters = () => {
+  filters.forEach((filter) => (filter.value = ""));
+};
 
 // CONTACT DETAILS
 // Array to store references to event handlers
@@ -268,27 +274,25 @@ const removeContactClickHandlers = () => {
 };
 
 // SHOW UPDATED CONTACTS LIST
+const resetHandlers = () => {
+  emptyFilters();
+  // Remove existing event handlers before attaching again
+  removeContactClickHandlers();
+  // Attach event handlers to contacts
+  attachContactClickHandlers();
+};
+
 const updateContactList = (updatedPage) => {
   if (updatedPage === favoritesPage) {
     displayFavoriteContacts();
     showPage(updatedPage);
-    filter.value = "";
-
-    // Remove existing event handlers before attaching again
-    removeContactClickHandlers();
-    // Attach event handlers to contacts
-    attachContactClickHandlers();
+    resetHandlers();
   }
 
   if (updatedPage === contactsPage) {
     displayContacts();
     showPage(updatedPage);
-    filter.value = "";
-
-    // Remove existing event handlers before attaching again
-    removeContactClickHandlers();
-    // Attach event handlers to contacts
-    attachContactClickHandlers();
+    resetHandlers();
   }
 };
 
@@ -382,7 +386,7 @@ keypadIcon.addEventListener("click", () => {
 contactsIcon.addEventListener("click", () => {
   updateContactList(contactsPage);
   display.textContent = "";
-  filter.value = "";
+  emptyFilters();
 
   hideAddNumberBtn();
   hideSaveBtn();
@@ -391,7 +395,7 @@ contactsIcon.addEventListener("click", () => {
 favoritesIcon.addEventListener("click", () => {
   updateContactList(favoritesPage);
   display.textContent = "";
-  filter.value = "";
+  emptyFilters();
 
   hideAddNumberBtn();
   hideSaveBtn();

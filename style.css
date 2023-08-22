@@ -303,19 +303,30 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 .contact-details input {
+  transition: all 0.2s ease-in;
+}
+
+.contact-details .allow-edit {
   background-color: rgba(255, 255, 255, 0.1);
   border: none;
   border-bottom: 1px solid rgba(255, 255, 255, 0.4);
   color: #fff;
 
   font-size: 1.5rem;
+  font-style: italic;
   padding: 0.5rem;
 
   width: 100%;
 }
 
-.contact-details input:focus {
+.contact-details .allow-edit:focus {
   outline: none;
+}
+
+.contact-details .not-allow-edit {
+  background-color: transparent;
+  cursor: auto;
+  font-style: normal;
 }
 
 .hideBtn {

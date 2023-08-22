@@ -79,15 +79,23 @@
           <a class="edit-contact">Edit</a>
           <a class="save-edited-contact hideBtn">Save</a>
         </div>
-        <input class="contact_name" type="text" placeholder="Name" readonly />
         <input
-          class="contact_firstName"
+          id="contact_name"
+          class="allow-edit not-allow-edit"
+          type="text"
+          placeholder="Name"
+          readonly
+        />
+        <input
+          id="contact_firstName"
+          class="allow-edit not-allow-edit"
           type="text"
           placeholder="First Name"
           readonly
         />
         <input
-          class="contact_number"
+          id="contact_number"
+          class="allow-edit not-allow-edit"
           type="text"
           placeholder="Phone Number"
           readonly

@@ -29,9 +29,9 @@ const cancelBtn = document.querySelector(".cancel");
 const duplicateNumberText = document.querySelector(".duplicateNumber");
 
 // Contact Details
-const contactNameInput = document.querySelector(".contact_name");
-const contactFirstNameInput = document.querySelector(".contact_firstName");
-const contactNumberInput = document.querySelector(".contact_number");
+const contactNameInput = document.getElementById("contact_name");
+const contactFirstNameInput = document.getElementById("contact_firstName");
+const contactNumberInput = document.getElementById("contact_number");
 const editContactBtn = document.querySelector(".edit-contact");
 const deleteContactBtn = document.querySelector(".delete-contact");
 const saveEditedContactBtn = document.querySelector(".save-edited-contact");
@@ -328,34 +328,42 @@ const updateContactList = (updatedPage) => {
   }
 };
 
-//   DELETE CURRENT CONTACT
-deleteContactBtn.addEventListener("click", () => {
-  contactsArray = contactsArray.filter((contact) => contact !== currentContact);
-  updateContactList(contactsPage);
-});
-
-const hideSaveBtn = () => {
-  if (editContactBtn.classList.contains("hideBtn")) {
-    editContactBtn.classList.toggle("hideBtn");
-    saveEditedContactBtn.classList.toggle("hideBtn");
+//   EDIT CURRENT CONTACT
+const editContactInput = () => {
+  if (contactNameInput.classList.contains("not-allow-edit")) {
+    contactNameInput.classList.remove("not-allow-edit");
+    contactFirstNameInput.classList.remove("not-allow-edit");
+    contactNumberInput.classList.remove("not-allow-edit");
+  } else {
+    contactNameInput.classList.add("not-allow-edit");
+    contactFirstNameInput.classList.add("not-allow-edit");
+    contactNumberInput.classList.add("not-allow-edit");
   }
 };
 
-//   EDIT CURRENT CONTACT
-editContactBtn.addEventListener("click", () => {
-  contactNameInput.readOnly = false;
-  contactFirstNameInput.readOnly = false;
-  contactNumberInput.readOnly = false;
+const checkIfEditing = (boolean) => {
+  if (boolean) {
+    contactNameInput.readOnly = false;
+    contactFirstNameInput.readOnly = false;
+    contactNumberInput.readOnly = false;
+    editContactInput();
+  } else {
+    contactNameInput.readOnly = true;
+    contactFirstNameInput.readOnly = true;
+    contactNumberInput.readOnly = true;
+    editContactInput();
+  }
+};
 
+editContactBtn.addEventListener("click", () => {
   editContactBtn.classList.toggle("hideBtn");
   saveEditedContactBtn.classList.toggle("hideBtn");
+  checkIfEditing(true);
 });
 
 //   SAVE CHANGES
 saveEditedContactBtn.addEventListener("click", () => {
-  contactNameInput.readOnly = true;
-  contactFirstNameInput.readOnly = true;
-  contactNumberInput.readOnly = true;
+  checkIfEditing();
 
   contactsArray.map((contact) => {
     if (contact === currentContact) {
@@ -367,6 +375,21 @@ saveEditedContactBtn.addEventListener("click", () => {
     updateContactList(contactsPage);
   });
 
+  hideSaveBtn();
+});
+
+const hideSaveBtn = () => {
+  if (editContactBtn.classList.contains("hideBtn")) {
+    editContactBtn.classList.toggle("hideBtn");
+    saveEditedContactBtn.classList.toggle("hideBtn");
+  }
+};
+
+//   DELETE CURRENT CONTACT
+deleteContactBtn.addEventListener("click", () => {
+  contactsArray = contactsArray.filter((contact) => contact !== currentContact);
+  updateContactList(contactsPage);
+  checkIfEditing();
   hideSaveBtn();
 });
 
@@ -411,12 +434,13 @@ keypadIcon.addEventListener("click", () => {
   if (!keypadPage.classList.contains("hidden")) {
     return;
   }
+  display.textContent = "";
   showPage(keypadPage);
   emptyInputFields();
   emptyFilters();
-  display.textContent = "";
   hideAddNumberBtn();
   hideSaveBtn();
+  checkIfEditing();
 });
 
 contactsIcon.addEventListener("click", () => {
@@ -426,6 +450,7 @@ contactsIcon.addEventListener("click", () => {
   emptyFilters();
   hideAddNumberBtn();
   hideSaveBtn();
+  checkIfEditing();
 });
 
 favoritesIcon.addEventListener("click", () => {
@@ -435,7 +460,7 @@ favoritesIcon.addEventListener("click", () => {
   emptyFilters();
   hideAddNumberBtn();
   hideSaveBtn();
+  checkIfEditing();
 });
 
-// TODO: In contact details add btn check if contact is favorite or not -> display btn remove/add to favorite
 // TODO: Create visual effect when when pressing edit contact

@@ -289,18 +289,17 @@ const removeContactClickHandlers = () => {
 };
 
 // ADD/REMOVE CONTACT FROM FAVORITE
-const favoriteBtnText = () => {
-  favoriteBtn.textContent =
-    favoriteBtn.textContent === "Remove as favorite"
-      ? "Add as favorite"
-      : "Remove as favorite";
+const updateFavoriteBtnText = () => {
+  favoriteBtn.textContent = currentContact.favorite
+    ? "Remove as favorite"
+    : "Add as favorite";
 };
 
 favoriteBtn.addEventListener("click", () => {
   contactsArray.forEach((contact) => {
     if (contact === currentContact) {
       contact.favorite = !contact.favorite;
-      favoriteBtnText();
+      updateFavoriteBtnText();
     }
   });
 });
@@ -329,29 +328,21 @@ const updateContactList = (updatedPage) => {
 };
 
 //   EDIT CURRENT CONTACT
-const editContactInput = () => {
-  if (contactNameInput.classList.contains("not-allow-edit")) {
-    contactNameInput.classList.remove("not-allow-edit");
-    contactFirstNameInput.classList.remove("not-allow-edit");
-    contactNumberInput.classList.remove("not-allow-edit");
-  } else {
-    contactNameInput.classList.add("not-allow-edit");
-    contactFirstNameInput.classList.add("not-allow-edit");
-    contactNumberInput.classList.add("not-allow-edit");
-  }
-};
-
 const checkIfEditing = (boolean) => {
   if (boolean) {
     contactNameInput.readOnly = false;
     contactFirstNameInput.readOnly = false;
     contactNumberInput.readOnly = false;
-    editContactInput();
+    contactNameInput.classList.remove("not-allow-edit");
+    contactFirstNameInput.classList.remove("not-allow-edit");
+    contactNumberInput.classList.remove("not-allow-edit");
   } else {
     contactNameInput.readOnly = true;
     contactFirstNameInput.readOnly = true;
     contactNumberInput.readOnly = true;
-    editContactInput();
+    contactNameInput.classList.add("not-allow-edit");
+    contactFirstNameInput.classList.add("not-allow-edit");
+    contactNumberInput.classList.add("not-allow-edit");
   }
 };
 
@@ -462,5 +453,3 @@ favoritesIcon.addEventListener("click", () => {
   hideSaveBtn();
   checkIfEditing();
 });
-
-// TODO: Create visual effect when when pressing edit contact

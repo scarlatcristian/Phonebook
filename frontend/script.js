@@ -61,7 +61,6 @@ const hideAddNumberBtn = () => {
 // TODO: Placeholder contacts array
 let contactsArray = [
   {
-    id: 1,
     name: "Vasile",
     firstName: "Tony",
     fullName: "Vasile Tony",
@@ -69,7 +68,6 @@ let contactsArray = [
     favorite: true,
   },
   {
-    id: 2,
     name: "Stici",
     firstName: "Robert",
     fullName: "Stici Robert",
@@ -77,7 +75,6 @@ let contactsArray = [
     favorite: true,
   },
   {
-    id: 3,
     name: "Savin",
     firstName: "Ilie",
     fullName: "Savin Ilie",
@@ -85,7 +82,6 @@ let contactsArray = [
     favorite: false,
   },
   {
-    id: 4,
     name: "Scarlat",
     firstName: "Cristi",
     fullName: "Scarlat Cristi",
@@ -93,7 +89,6 @@ let contactsArray = [
     favorite: true,
   },
   {
-    id: 5,
     name: "Dache",
     firstName: "Marina",
     fullName: "Dache Marina",
@@ -101,7 +96,6 @@ let contactsArray = [
     favorite: false,
   },
   {
-    id: 6,
     name: "Vas",
     firstName: "Ioana",
     fullName: "Vas Ioana",
@@ -109,7 +103,6 @@ let contactsArray = [
     favorite: false,
   },
   {
-    id: 7,
     name: "Lover-Boy",
     firstName: "Trea ❤️",
     fullName: "Lover-Boy Trea ❤️",

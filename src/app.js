@@ -1,20 +1,12 @@
 const express = require("express");
-const cors = require("cors");
+const path = require("path");
 const app = express();
 
-// Enable CORS
-app.use(cors());
+// Serve Frontend
+const frontendDirectoryPath = path.join(__dirname, "../frontend");
+app.use(express.static(frontendDirectoryPath));
 
-// Parse JSON requests
-app.use(express.json());
-
-// Define a route for the root path ("/")
-app.get("/", (req, res) => {
-  res.json({
-    status: "success",
-    message: "Welcome to the Phonebook API!",
-  });
-});
+console.log(frontendDirectoryPath);
 
 // Start the server
 const PORT = process.env.PORT || 3001;

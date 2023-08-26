@@ -58,58 +58,19 @@ const hideAddNumberBtn = () => {
   deleteBtn.style.opacity = 0;
 };
 
-// TODO: Placeholder contacts array
-let contactsArray = [
-  {
-    name: "Vasile",
-    firstName: "Tony",
-    fullName: "Vasile Tony",
-    number: "0752654784",
-    favorite: true,
-  },
-  {
-    name: "Stici",
-    firstName: "Robert",
-    fullName: "Stici Robert",
-    number: "0752254784",
-    favorite: true,
-  },
-  {
-    name: "Savin",
-    firstName: "Ilie",
-    fullName: "Savin Ilie",
-    number: "0726485034",
-    favorite: false,
-  },
-  {
-    name: "Scarlat",
-    firstName: "Cristi",
-    fullName: "Scarlat Cristi",
-    number: "0726485234",
-    favorite: true,
-  },
-  {
-    name: "Dache",
-    firstName: "Marina",
-    fullName: "Dache Marina",
-    number: "0722485034",
-    favorite: false,
-  },
-  {
-    name: "Vas",
-    firstName: "Ioana",
-    fullName: "Vas Ioana",
-    number: "0722425034",
-    favorite: false,
-  },
-  {
-    name: "Lover-Boy",
-    firstName: "Trea ❤️",
-    fullName: "Lover-Boy Trea ❤️",
-    number: "0722425034",
-    favorite: false,
-  },
-];
+// FETCH CONTACTS FROM SERVER
+let contactsArray = [];
+const fetchContacts = async () => {
+  try {
+    const response = await fetch("/contacts");
+    const data = await response.json();
+    contactsArray = data;
+  } catch (error) {
+    console.error("Error fetching contacts:", error);
+  }
+};
+
+fetchContacts();
 
 // ADDING THE NUMBER WHEN PRESSING THE BUTTONS
 keypadBtn.forEach((btn) => {

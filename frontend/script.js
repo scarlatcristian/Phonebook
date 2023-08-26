@@ -1,5 +1,5 @@
 "use strict";
-import { addContact } from "./api.js";
+import { addContact, deleteContact } from "./api.js";
 
 // FOOTER
 const keypadIcon = document.querySelector(".keypad");
@@ -334,11 +334,23 @@ const hideSaveBtn = () => {
 };
 
 //   DELETE CURRENT CONTACT
-deleteContactBtn.addEventListener("click", () => {
-  contactsArray = contactsArray.filter((contact) => contact !== currentContact);
-  updateContactList(contactsPage);
-  checkIfEditing();
-  hideSaveBtn();
+deleteContactBtn.addEventListener("click", async () => {
+  try {
+    const deletionSuccessful = await deleteContact(currentContact);
+    if (deletionSuccessful) {
+      contactsArray = contactsArray.filter(
+        (contact) => contact !== currentContact
+      );
+      updateContactList(contactsPage);
+      checkIfEditing();
+      hideSaveBtn();
+    } else {
+      // Handle case where deletion was not successful
+    }
+  } catch (error) {
+    // Handle error from deleteContact function
+    console.error("Error deleting contact:", error);
+  }
 });
 
 // SAVING THE NEW CONTACT
@@ -361,13 +373,17 @@ saveBtn.addEventListener("click", () => {
     });
 
     if (!isDuplicate) {
-      let contact = {
+      const newContact = {
         name: inputName.value,
         firstName: inputFirstName.value,
         fullName: `${inputName.value} ${inputFirstName.value}`,
         number: inputNumber.value,
+        favorite: false,
       };
-      contactsArray.push(contact);
+
+      addContact(newContact);
+
+      contactsArray.push(newContact);
       showPage(keypadPage);
 
       emptyInputFields();

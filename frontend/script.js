@@ -1,4 +1,6 @@
 "use strict";
+import { addContact } from "./api.js";
+
 // FOOTER
 const keypadIcon = document.querySelector(".keypad");
 const favoritesIcon = document.querySelector(".favorites");
@@ -59,14 +61,15 @@ const hideAddNumberBtn = () => {
 };
 
 // FETCH CONTACTS FROM SERVER
-let contactsArray = [];
+let contactsArray;
+
 const fetchContacts = async () => {
   try {
     const response = await fetch("/contacts");
-    const data = await response.json();
-    contactsArray = data;
+    contactsArray = await response.json();
   } catch (error) {
     console.error("Error fetching contacts:", error);
+    throw error;
   }
 };
 

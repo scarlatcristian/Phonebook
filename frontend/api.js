@@ -17,7 +17,7 @@ const addContact = async (contact) => {
     }
   } catch (error) {
     console.error("Error adding contact:", error);
-    throw error;
+    throw new Error("An error occurred while adding the contact.");
   }
 };
 
@@ -44,4 +44,27 @@ const deleteContact = async (contact) => {
   }
 };
 
-export { addContact, deleteContact };
+const updateContact = async (contact) => {
+  try {
+    const response = await fetch("/update-contact", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(contact),
+    });
+
+    if (response.ok) {
+      console.log("Contact updated successfully.");
+      return true;
+    } else {
+      console.error("Error updating contact:", response.statusText);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error updating contact:", error);
+    throw new Error("An error occurred while updating the contact.");
+  }
+};
+
+export { addContact, deleteContact, updateContact };

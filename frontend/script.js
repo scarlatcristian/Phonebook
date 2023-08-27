@@ -1,5 +1,5 @@
 "use strict";
-import { addContact, deleteContact } from "./api.js";
+import { addContact, deleteContact, updateContact } from "./api.js";
 
 // FOOTER
 const keypadIcon = document.querySelector(".keypad");
@@ -253,10 +253,20 @@ const updateFavoriteBtnText = () => {
 };
 
 favoriteBtn.addEventListener("click", () => {
-  contactsArray.forEach((contact) => {
+  contactsArray.forEach(async (contact) => {
     if (contact === currentContact) {
-      contact.favorite = !contact.favorite;
-      updateFavoriteBtnText();
+      try {
+        contact.favorite = !contact.favorite;
+        const updatedContact = await updateContact(currentContact);
+        if (updatedContact) {
+          updateFavoriteBtnText();
+        } else {
+          // Handle case where deletion was not successful
+        }
+      } catch (error) {
+        // Handle error from deleteContact function
+        console.error("Error updating contact:", error);
+      }
     }
   });
 });

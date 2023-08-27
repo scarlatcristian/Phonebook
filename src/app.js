@@ -46,7 +46,7 @@ app.post("/add-contact", async (req, res) => {
 app.delete("/delete-contact", async (req, res) => {
   try {
     const contact = req.body;
-    const deletedContact = await Contacts.findOneAndDelete(contact);
+    const deletedContact = await Contacts.findByIdAndDelete(contact._id);
 
     if (!deletedContact) {
       return res.status(404).json({ error: "Contact not found" });
@@ -58,6 +58,31 @@ app.delete("/delete-contact", async (req, res) => {
     res
       .status(500)
       .json({ error: "An error occurred while deleting the contact" });
+  }
+});
+
+app.put("/update-contact", async (req, res) => {
+  try {
+    const updatedContact = req.body;
+
+    const updatedDocument = await Contacts.findByIdAndUpdate(
+      updatedContact._id,
+      updatedContact,
+      {
+        new: true,
+      }
+    );
+
+    if (!updatedDocument) {
+      return res.status(404).json({ error: "Contact not found" });
+    }
+
+    res.status(200).json(updatedDocument);
+  } catch (error) {
+    console.error("Error updating contact:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating the contact" });
   }
 });
 

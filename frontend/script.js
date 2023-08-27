@@ -397,7 +397,7 @@ saveBtn.addEventListener("click", async () => {
       try {
         const creatingContact = await addContact(newContact);
         if (creatingContact) {
-          contactsArray.push(newContact);
+          fetchContacts();
           showPage(keypadPage);
           emptyInputFields();
           hideAddNumberBtn();

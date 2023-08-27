@@ -323,16 +323,23 @@ editContactBtn.addEventListener("click", () => {
 saveEditedContactBtn.addEventListener("click", () => {
   checkIfEditing();
 
-  contactsArray.map((contact) => {
+  contactsArray.map(async (contact) => {
     if (contact === currentContact) {
-      contact.name = contactNameInput.value;
-      contact.firstName = contactFirstNameInput.value;
-      contact.number = contactNumberInput.value;
-      contact.fullName = `${contactNameInput.value} ${contactFirstNameInput.value}`;
+      try {
+        contact.name = contactNameInput.value;
+        contact.firstName = contactFirstNameInput.value;
+        contact.number = contactNumberInput.value;
+        contact.fullName = `${contactNameInput.value} ${contactFirstNameInput.value}`;
+        const updatedContact = await updateContact(currentContact);
+        if (updatedContact) {
+          updateContactList(contactsPage);
+        }
+      } catch (error) {
+        // Handle error from deleteContact function
+        console.error("Error updating contact:", error);
+      }
     }
-    updateContactList(contactsPage);
   });
-
   hideSaveBtn();
 });
 

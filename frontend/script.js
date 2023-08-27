@@ -354,7 +354,7 @@ deleteContactBtn.addEventListener("click", async () => {
 });
 
 // SAVING THE NEW CONTACT
-saveBtn.addEventListener("click", () => {
+saveBtn.addEventListener("click", async () => {
   if (
     inputName.value !== "" &&
     inputFirstName.value !== "" &&
@@ -381,14 +381,21 @@ saveBtn.addEventListener("click", () => {
         favorite: false,
       };
 
-      addContact(newContact);
-
-      contactsArray.push(newContact);
-      showPage(keypadPage);
-
-      emptyInputFields();
-      hideAddNumberBtn();
-      displayContacts();
+      try {
+        const creatingContact = await addContact(newContact);
+        if (creatingContact) {
+          contactsArray.push(newContact);
+          showPage(keypadPage);
+          emptyInputFields();
+          hideAddNumberBtn();
+          displayContacts();
+        } else {
+          // Handle case where addContact was not successful
+        }
+      } catch (error) {
+        // Handle error from addContact function
+        console.error("Error creating contact:", error);
+      }
     }
   }
 });

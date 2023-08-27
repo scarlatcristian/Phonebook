@@ -260,11 +260,9 @@ favoriteBtn.addEventListener("click", () => {
         const updatedContact = await updateContact(currentContact);
         if (updatedContact) {
           updateFavoriteBtnText();
-        } else {
-          // Handle case where deletion was not successful
         }
       } catch (error) {
-        // Handle error from deleteContact function
+        // Handle error from updateContact function
         console.error("Error updating contact:", error);
       }
     }
@@ -335,7 +333,7 @@ saveEditedContactBtn.addEventListener("click", () => {
           updateContactList(contactsPage);
         }
       } catch (error) {
-        // Handle error from deleteContact function
+        // Handle error from updateContact function
         console.error("Error updating contact:", error);
       }
     }
@@ -361,8 +359,6 @@ deleteContactBtn.addEventListener("click", async () => {
       updateContactList(contactsPage);
       checkIfEditing();
       hideSaveBtn();
-    } else {
-      // Handle case where deletion was not successful
     }
   } catch (error) {
     // Handle error from deleteContact function
@@ -406,8 +402,6 @@ saveBtn.addEventListener("click", async () => {
           emptyInputFields();
           hideAddNumberBtn();
           displayContacts();
-        } else {
-          // Handle case where addContact was not successful
         }
       } catch (error) {
         // Handle error from addContact function

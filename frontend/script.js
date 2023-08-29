@@ -1,5 +1,10 @@
 "use strict";
-import { addContact, deleteContact, updateContact } from "./api.js";
+import {
+  addContact,
+  deleteContact,
+  updateContact,
+  fetchContacts,
+} from "./api.js";
 
 // FOOTER
 const keypadIcon = document.querySelector(".keypad");
@@ -61,19 +66,7 @@ const hideAddNumberBtn = () => {
 };
 
 // FETCH CONTACTS FROM SERVER
-let contactsArray;
-
-const fetchContacts = async () => {
-  try {
-    const response = await fetch("/contacts");
-    contactsArray = await response.json();
-  } catch (error) {
-    console.error("Error fetching contacts:", error);
-    throw error;
-  }
-};
-
-fetchContacts();
+let contactsArray = await fetchContacts();
 
 // ADDING THE NUMBER WHEN PRESSING THE BUTTONS
 keypadBtn.forEach((btn) => {
@@ -122,38 +115,60 @@ cancelBtn.addEventListener("click", () => {
   hideAddNumberBtn();
 });
 
+const createContactElement = (contact, displayContainer) => {
+  const contactElement = document.createElement("div");
+  contactElement.classList.add("contact");
+  contactElement.innerHTML = `<p>${contact.fullName}</p>`;
+  contactElement.contactData = contact;
+  contactElement.setAttribute("data-name", contact.name);
+  if (displayContainer === "allContacts") {
+    allContactsContainer.appendChild(contactElement);
+  }
+  if (displayContainer === "favorites") {
+    favoriteContacts.appendChild(contactElement);
+  }
+};
+
 const showAllContacts = (array) => {
   allContactsContainer.innerHTML = "";
-
   // Sorting the array alphabetically by name
-  array.sort((a, b) => a.name.localeCompare(b.name));
-  array.forEach((contact) => {
-    const contactElement = document.createElement("div");
-    contactElement.classList.add("contact");
-    contactElement.innerHTML = `<p>${contact.fullName}</p>`;
-    contactElement.contactData = contact;
-    contactElement.setAttribute("data-name", contact.name);
+  if (array.length > 1) {
+    array.sort((a, b) => a.name.localeCompare(b.name));
+    array.forEach((contact) => {
+      createContactElement(contact, "allContacts");
+    });
+  }
 
-    allContactsContainer.appendChild(contactElement);
-  });
+  if (array.length < 1) {
+    return;
+  }
+
+  if (array.length < 2) {
+    createContactElement(array[0], "allContacts");
+  }
 };
 
 const showAllFavoriteContacts = (array) => {
   favoriteContacts.innerHTML = "";
-
   // Sorting the array alphabetically by name
-  array.sort((a, b) => a.name.localeCompare(b.name));
-  array.forEach((contact) => {
-    if (contact.favorite) {
-      const contactElement = document.createElement("div");
-      contactElement.classList.add("contact");
-      contactElement.innerHTML = `<p>${contact.fullName}</p>`;
-      contactElement.contactData = contact;
-      contactElement.setAttribute("data-name", contact.name);
+  if (array.length > 1) {
+    array.sort((a, b) => a.name.localeCompare(b.name));
+    array.forEach((contact) => {
+      if (contact.favorite) {
+        createContactElement(contact, "favorites");
+      }
+    });
+  }
 
-      favoriteContacts.appendChild(contactElement);
+  if (array.length < 1) {
+    return;
+  }
+
+  if (array.length < 2) {
+    if (array[0].favorite) {
+      createContactElement(array[0], "favorites");
     }
-  });
+  }
 };
 
 // SHOWING FAVORITE CONTACT
@@ -397,7 +412,7 @@ saveBtn.addEventListener("click", async () => {
       try {
         const creatingContact = await addContact(newContact);
         if (creatingContact) {
-          fetchContacts();
+          contactsArray = await fetchContacts();
           showPage(keypadPage);
           emptyInputFields();
           hideAddNumberBtn();

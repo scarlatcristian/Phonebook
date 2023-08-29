@@ -1,3 +1,13 @@
+const fetchContacts = async () => {
+  try {
+    const response = await fetch("/contacts");
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching contacts:", error);
+    throw error;
+  }
+};
+
 const addContact = async (contact) => {
   try {
     const response = await fetch("/add-contact", {
@@ -67,4 +77,4 @@ const updateContact = async (contact) => {
   }
 };
 
-export { addContact, deleteContact, updateContact };
+export { addContact, deleteContact, updateContact, fetchContacts };

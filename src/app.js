@@ -64,13 +64,9 @@ app.delete("/delete-contact", async (req, res) => {
 app.put("/update-contact", async (req, res) => {
   try {
     const updatedContact = req.body;
-
     const updatedDocument = await Contacts.findByIdAndUpdate(
       updatedContact._id,
-      updatedContact,
-      {
-        new: true,
-      }
+      updatedContact
     );
 
     if (!updatedDocument) {
